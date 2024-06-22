@@ -1,18 +1,24 @@
 package main
 
 import (
+	"animeDW/backend/api"
+	"animeDW/backend/storage"
 	"context"
 	"fmt"
 )
 
 // App struct
 type App struct {
-	ctx context.Context
+	ctx     context.Context
+	client  *api.Client
+	storage *storage.Storage
 }
 
 // NewApp creates a new App application struct
 func NewApp() *App {
-	return &App{}
+	client := api.NewClient("https://aniwave.to")
+	storage := storage.NewStorage()
+	return &App{client: client, storage: storage}
 }
 
 // startup is called at application startup
@@ -26,9 +32,6 @@ func (a App) domReady(ctx context.Context) {
 	// Add your action here
 }
 
-// beforeClose is called when the application is about to quit,
-// either by clicking the window close button or calling runtime.Quit.
-// Returning true will cause the application to continue, false will continue shutdown as normal.
 func (a *App) beforeClose(ctx context.Context) (prevent bool) {
 	return false
 }
@@ -37,8 +40,12 @@ func (a *App) beforeClose(ctx context.Context) (prevent bool) {
 func (a *App) shutdown(ctx context.Context) {
 	// Perform your teardown here
 }
+func (a *App) Get(url string, headers map[string]string) (string, error) {
+    return a.client.Get(url, headers)
+}
+
 
 // Greet returns a greeting for the given name
 func (a *App) Greet(name string) string {
-	return fmt.Sprintf("Hello %s, It's show time!", name)
+	return fmt.Sprintf("Hello %s, It's show fuckrtg!", name)
 }
